@@ -1,4 +1,4 @@
-package io.nicky.translator.protocol;
+package testing;
 
 import io.nicky.translator.protocol.data.ProtocolBuffer;
 

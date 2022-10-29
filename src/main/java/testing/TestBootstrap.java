@@ -1,4 +1,6 @@
-package io.nicky.translator.protocol;
+package testing;
+
+import io.nicky.translator.protocol.ProtocolTranslator;
 
 public class TestBootstrap {
 
