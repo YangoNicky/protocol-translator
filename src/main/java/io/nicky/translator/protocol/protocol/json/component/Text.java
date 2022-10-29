@@ -3,7 +3,7 @@ package io.nicky.translator.protocol.protocol.json.component;
 import com.google.gson.JsonElement;
 import io.nicky.translator.protocol.protocol.json.component.events.ClickEvent;
 import io.nicky.translator.protocol.protocol.json.component.events.HoverEvent;
-import io.nicky.translator.protocol.protocol.json.component.formatter.DefaultJsonFormatter;
+import io.nicky.translator.protocol.protocol.json.component.formatter.JsonFormatter;
 import io.nicky.translator.protocol.protocol.json.component.types.LiteralText;
 
 import java.util.List;
@@ -28,10 +28,9 @@ public interface Text {
 
     EnumColor color();
 
-    default JsonElement toJson() {
-        return DefaultJsonFormatter.INSTANCE.format(this);
+    default JsonElement toJson(final JsonFormatter formatter) {
+        return formatter.format(this);
     }
-
 
     List<Text> getChildTexts();
 

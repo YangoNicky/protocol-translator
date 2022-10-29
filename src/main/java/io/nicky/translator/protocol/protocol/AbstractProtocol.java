@@ -20,9 +20,13 @@ public abstract class AbstractProtocol {
         return this;
     }
 
+    public void registerPacketTransformer(final int packetId, final int cap, PacketRewriter packetRewriter) {
+
+    }
     public void registerPacketTransformer(final int packetId, PacketRewriter packetRewriter) {
 
     }
+
     public void registerJsonRewriter(final JsonRewriter jsonRewriter) {
 
     }

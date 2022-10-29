@@ -6,7 +6,7 @@ import java.nio.charset.StandardCharsets;
 @SuppressWarnings("unused")
 public class ProtocolBuffer {
 
-    private final byte[] internal;
+    private byte[] internal;
     private int writePosition;
     private int readPosition;
 
@@ -101,6 +101,12 @@ public class ProtocolBuffer {
     }
 
     // units
+
+    public void unfold() {
+        final byte[] copy = new byte[this.writePosition];
+        System.arraycopy(this.internal, 0, copy, 0, this.writePosition);
+        this.internal = copy;
+    }
 
     public int length() {
         return this.internal.length;

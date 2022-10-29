@@ -10,8 +10,6 @@ import java.util.Locale;
 
 public class DefaultJsonFormatter implements JsonFormatter {
 
-    public static final JsonFormatter INSTANCE = new DefaultJsonFormatter();
-
     @Override
     public JsonElement format(Text text) {
         JsonArray array = new JsonArray();

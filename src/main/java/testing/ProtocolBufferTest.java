@@ -25,6 +25,11 @@ public final class ProtocolBufferTest {
         System.out.println("array: " + Arrays.toString(protocolBuffer.readByteArray(toRead)));
         System.out.println("string: " + protocolBuffer.readString());
 
+        System.out.println("-".repeat(100));
+        System.out.println("Pre: " + Arrays.toString(protocolBuffer.getInternal()));
+        protocolBuffer.unfold();
+        System.out.println("Post: " + Arrays.toString(protocolBuffer.getInternal()));
+
         // should not happen gets caught!
         System.out.println("over limit: " + protocolBuffer.readByte());
     }
