@@ -13,12 +13,9 @@ import io.nicky.translator.protocol.protocol.ProtocolVersion;
 public final class Protocol1_18 extends AbstractProtocol {
 
     @Override
-    public void registerVersionUp() {
+    public void registerDownTransformation() {
 
     }
 
-    @Override
-    public void registerVersionDown() {
 
-    }
 }

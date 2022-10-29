@@ -84,15 +84,14 @@ public final class ProtocolManager {
         // used for utility that needs to stay in load order!
         protocol.registerOther();
 
-        protocol.registerVersionUp();
-        protocol.registerVersionDown();
+        protocol.registerDownTransformation();
     }
 
     public boolean validate(final AbstractProtocol protocol, final ProtocolId protocolId) {
         if (protocols.entrySet().stream().noneMatch(entry -> entry.getKey().id() == protocolId.id()
                 || entry.getKey().current() == protocolId.current())) {
 
-            logger.debug(" -> %s",  protocolId.current().getName());
+            logger.debug(" -> %s", protocolId.current().getName());
 
             this.protocols.put(protocolId, protocol);
         }

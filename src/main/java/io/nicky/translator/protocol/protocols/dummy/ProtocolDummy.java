@@ -13,12 +13,14 @@ import io.nicky.translator.protocol.protocol.ProtocolVersion;
 public final class ProtocolDummy extends AbstractProtocol {
 
     @Override
-    public void registerVersionUp() {
+    public void registerDownTransformation() {
 
-    }
+        this.registerJsonRewriter(upperVersion -> {
+        });
 
-    @Override
-    public void registerVersionDown() {
+        this.registerPacketTransformer(0x01, packet -> {
 
+
+        });
     }
 }

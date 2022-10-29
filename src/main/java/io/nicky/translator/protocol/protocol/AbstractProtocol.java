@@ -1,10 +1,11 @@
 package io.nicky.translator.protocol.protocol;
 
+import io.nicky.translator.protocol.protocol.json.JsonRewriter;
+import io.nicky.translator.protocol.protocol.packet.PacketRewriter;
+
 public abstract class AbstractProtocol {
 
-    public abstract void registerVersionUp();
-
-    public abstract void registerVersionDown();
+    public abstract void registerDownTransformation();
 
     public AbstractProtocol initialize(final ProtocolManager protocolManager) {
         final ProtocolId protocolId = this.getClass().getAnnotation(ProtocolId.class);
@@ -17,6 +18,13 @@ public abstract class AbstractProtocol {
         }
 
         return this;
+    }
+
+    public void registerPacketTransformer(final int packetId, PacketRewriter packetRewriter) {
+
+    }
+    public void registerJsonRewriter(final JsonRewriter jsonRewriter) {
+
     }
 
     public void registerOther() {
