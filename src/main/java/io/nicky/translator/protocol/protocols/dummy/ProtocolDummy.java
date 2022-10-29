@@ -16,11 +16,12 @@ public final class ProtocolDummy extends AbstractProtocol {
     public void registerDownTransformation() {
 
         this.registerJsonRewriter(upperVersion -> {
+
         });
 
         this.registerPacketTransformer(0x01, packet -> {
 
-
         });
+
     }
 }
