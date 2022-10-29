@@ -1,6 +1,6 @@
 package io.nicky.translator.protocol.protocol.json.component.events;
 
-public interface IClickEvent {
+public interface ClickEvent {
 
     EnumAction getAction();
 

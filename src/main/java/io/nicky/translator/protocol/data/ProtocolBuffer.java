@@ -75,15 +75,14 @@ public class ProtocolBuffer {
     }
 
     public void writeByteArray(final byte... bytes) {
-        for (byte aByte : bytes) {
+        for (byte aByte : bytes)
             this.writeByte(aByte);
-        }
     }
 
     public byte[] readByteArray(final byte[] output) {
-        for (int i = 0; i < output.length; i++) {
+        for (int i = 0; i < output.length; i++)
             output[i] = this.readByte();
-        }
+
         return output;
     }
 

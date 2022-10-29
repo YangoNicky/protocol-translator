@@ -1,19 +1,19 @@
 package io.nicky.translator.protocol.protocol.json.component.types;
 
 import io.nicky.translator.protocol.protocol.json.component.EnumColor;
-import io.nicky.translator.protocol.protocol.json.component.IText;
-import io.nicky.translator.protocol.protocol.json.component.events.IClickEvent;
-import io.nicky.translator.protocol.protocol.json.component.events.IHoverEvent;
+import io.nicky.translator.protocol.protocol.json.component.Text;
+import io.nicky.translator.protocol.protocol.json.component.events.ClickEvent;
+import io.nicky.translator.protocol.protocol.json.component.events.HoverEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class LiteralText implements IText {
+public class LiteralText implements Text {
 
-    private final List<IText> childTexts = new ArrayList<>();
+    private final List<Text> childTexts = new ArrayList<>();
     private final String text;
-    private IHoverEvent hoverEvent;
-    private IClickEvent clickEvent;
+    private HoverEvent hoverEvent;
+    private ClickEvent clickEvent;
     private EnumColor color;
 
     public LiteralText(final String text) {
@@ -21,36 +21,36 @@ public class LiteralText implements IText {
     }
 
     @Override
-    public IText append(IText text) {
+    public Text append(Text text) {
         this.childTexts.add(text);
         return this;
     }
 
     @Override
-    public IText hoverEvent(IHoverEvent event) {
+    public Text hoverEvent(HoverEvent event) {
         this.hoverEvent = event;
         return this;
     }
 
     @Override
-    public IText clickEvent(IClickEvent event) {
+    public Text clickEvent(ClickEvent event) {
         this.clickEvent = event;
         return this;
     }
 
     @Override
-    public IText color(EnumColor color) {
+    public Text color(EnumColor color) {
         this.color = color;
         return this;
     }
 
     @Override
-    public IHoverEvent hoverEvent() {
+    public HoverEvent hoverEvent() {
         return this.hoverEvent;
     }
 
     @Override
-    public IClickEvent clickEvent() {
+    public ClickEvent clickEvent() {
         return this.clickEvent;
     }
 
@@ -60,7 +60,7 @@ public class LiteralText implements IText {
     }
 
     @Override
-    public List<IText> getChildTexts() {
+    public List<Text> getChildTexts() {
         return this.childTexts;
     }
 
@@ -75,7 +75,7 @@ public class LiteralText implements IText {
         return this.text;
     }
 
-    public String asStringInternal(final IText text) {
+    public String asStringInternal(final Text text) {
         StringBuilder stringBuilder = new StringBuilder();
         if (text.color() != null)
             stringBuilder.append(text.color());

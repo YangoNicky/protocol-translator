@@ -4,27 +4,30 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import io.nicky.translator.protocol.protocol.json.component.IText;
-import io.nicky.translator.protocol.protocol.json.component.utils.JsonArrayUtils;
+import io.nicky.translator.protocol.protocol.json.component.Text;
 
 import java.util.Locale;
 
-public class DefaultJsonFormatter implements IJsonFormatter {
+public class DefaultJsonFormatter implements JsonFormatter {
 
-    public static final IJsonFormatter INSTANCE = new DefaultJsonFormatter();
+    public static final JsonFormatter INSTANCE = new DefaultJsonFormatter();
 
     @Override
-    public JsonElement format(IText text) {
+    public JsonElement format(Text text) {
         JsonArray array = new JsonArray();
         this.format(text, array);
-        if (array.size() > 1)
-            array = JsonArrayUtils.appendFirst(new JsonPrimitive(""), array);
+        if (array.size() > 1) {
+            JsonArray newArray = new JsonArray();
+            newArray.add(new JsonPrimitive(""));
+            array.forEach(newArray::add);
+            array = newArray;
+        }
 
         return array.size() == 1 ? array.get(0) : array;
     }
 
     @SuppressWarnings("all")
-    public void format(final IText text, final JsonArray array) {
+    public void format(final Text text, final JsonArray array) {
         JsonObject object = new JsonObject();
         object.addProperty("text", text.getText());
         if (text.color() != null)

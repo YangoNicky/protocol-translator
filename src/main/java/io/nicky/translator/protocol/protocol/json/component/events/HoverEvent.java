@@ -1,6 +1,6 @@
 package io.nicky.translator.protocol.protocol.json.component.events;
 
-public interface IHoverEvent {
+public interface HoverEvent {
 
     enum EnumAction {
 
