@@ -1,7 +1,9 @@
 package io.nicky.translator.protocol.data;
 
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 
+@SuppressWarnings("unused")
 public class ProtocolBuffer {
 
     private final byte[] internal;
@@ -23,6 +25,8 @@ public class ProtocolBuffer {
     public ProtocolBuffer(final int capacity) {
         this.internal = new byte[capacity];
     }
+
+    // write read
 
     public void writeByte(final byte value) {
         this.checkCapacity(Action.WRITE, 1);
@@ -51,11 +55,56 @@ public class ProtocolBuffer {
         return this.readByte();
     }
 
-    public void writeByteArray(final byte... bytes) {
-
+    public void writeVarInt(int value) {
+        while ((value & 0xFFFFFF80) != 0x0) {
+            this.write127Int((value & 0x7F) | 0x80);
+            value >>>= 7;
+        }
+        this.write127Int(value);
     }
-    public void readByteArray(final byte... bytes) {
 
+    public int readVarInt() {
+        int value = 0;
+        int index = 0;
+        byte current;
+        do {
+            current = this.readByte();
+            value |= (current & 0x7F) << index++ * 7;
+        } while ((current & 0x80) == 0x80);
+        return value;
+    }
+
+    public void writeByteArray(final byte... bytes) {
+        for (byte aByte : bytes) {
+            this.writeByte(aByte);
+        }
+    }
+
+    public byte[] readByteArray(final byte[] output) {
+        for (int i = 0; i < output.length; i++) {
+            output[i] = this.readByte();
+        }
+        return output;
+    }
+
+    public void writeString(final String value) {
+        byte[] dataArray = value.getBytes(StandardCharsets.UTF_8);
+        final int length = dataArray.length;
+        this.writeVarInt(length);
+        this.writeByteArray(dataArray);
+    }
+
+    public String readString() {
+        final int length = this.readVarInt();
+        final byte[] dataArray = new byte[length];
+        this.readByteArray(dataArray);
+        return new String(dataArray, StandardCharsets.UTF_8);
+    }
+
+    // units
+
+    public int length() {
+        return this.internal.length;
     }
 
     public void checkCapacity(final Action action, final int capacity) {
