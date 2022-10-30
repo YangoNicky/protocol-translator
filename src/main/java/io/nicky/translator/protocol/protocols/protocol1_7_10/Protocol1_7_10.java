@@ -6,7 +6,7 @@ import io.nicky.translator.protocol.protocol.ProtocolVersion;
 
 @ProtocolId(
         id = 27,
-        from = ProtocolVersion.V_1_8_8_R1,
+        from = ProtocolVersion.V_1_8_8,
         current = ProtocolVersion.V_1_7_10,
         to = ProtocolVersion.NONE
 )

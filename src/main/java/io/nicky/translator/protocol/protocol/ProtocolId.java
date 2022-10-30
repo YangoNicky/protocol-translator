@@ -10,7 +10,7 @@ public @interface ProtocolId {
 
     int id();
     ProtocolVersion from();
-    ProtocolVersion current();
+    ProtocolVersion[] current();
     ProtocolVersion to();
 
 }

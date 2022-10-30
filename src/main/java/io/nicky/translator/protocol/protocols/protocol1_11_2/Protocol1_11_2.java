@@ -7,8 +7,11 @@ import io.nicky.translator.protocol.protocol.ProtocolVersion;
 @ProtocolId(
         id = 21,
         from = ProtocolVersion.V_1_12,
-        current = ProtocolVersion.V_1_11_2,
-        to = ProtocolVersion.V_1_11
+        current = {
+                ProtocolVersion.V_1_11,
+                ProtocolVersion.V_1_11_2
+        },
+        to = ProtocolVersion.V_1_10
 )
 public final class Protocol1_11_2 extends AbstractProtocol {
 
