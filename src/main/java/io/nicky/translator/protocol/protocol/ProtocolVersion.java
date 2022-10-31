@@ -1,5 +1,7 @@
 package io.nicky.translator.protocol.protocol;
 
+import io.nicky.translator.protocol.data.ProtocolBuffer;
+
 public enum ProtocolVersion {
 
     V_1_19_2(       "1.19.1",   760),
@@ -41,6 +43,21 @@ public enum ProtocolVersion {
     ProtocolVersion(String name, int protocolId) {
         this.name = name;
         this.protocolId = protocolId;
+    }
+
+    public static ProtocolVersion oldest() {
+        return ProtocolVersion.values()[ProtocolVersion.values().length - 2]; // skipping @NONE
+    }
+
+    public boolean isLower(final ProtocolVersion version) {
+        return this.ordinal() > version.ordinal();
+    }
+    public boolean isHigher(final ProtocolVersion version) {
+        return this.ordinal() < version.ordinal();
+    }
+
+    public static ProtocolVersion latest() {
+        return ProtocolVersion.values()[0];
     }
 
     public String getName() {

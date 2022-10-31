@@ -15,7 +15,6 @@ import io.nicky.translator.protocol.protocols.protocol1_7_10.Protocol1_7_10;
 import io.nicky.translator.protocol.protocols.protocol1_8_9.Protocol1_8_9;
 import io.nicky.translator.protocol.protocols.protocol1_9_4.Protocol1_9_4;
 import io.nicky.translator.protocol.units.DebugLogger;
-import io.nicky.translator.protocol.units.StringUtil;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -48,12 +47,21 @@ public final class ProtocolManager {
     }
 
     public void registerProtocol(final AbstractProtocol protocol) {
-        protocol.initialize(this);
+        final ProtocolId protocolId = protocol.getClass().getAnnotation(ProtocolId.class);
 
-        // used for utility that needs to stay in load order!
-        protocol.registerOther();
+        if (protocolId == null)
+            throw new IllegalStateException("Protocol is missing @ProtocolId annotation... (" + this.getClass().getSimpleName() + ")");
 
-        protocol.registerDownTransformation();
+        if (validate(protocol, protocolId)) {
+            // todo run finalizing code
+
+            protocol.initialize(protocolId, this);
+
+            // used for utility that needs to stay in load order!
+            protocol.registerOther();
+
+            protocol.registerDownTransformation();
+        }
     }
 
     public boolean validate(final AbstractProtocol protocol, final ProtocolId protocolId) {
@@ -68,6 +76,7 @@ public final class ProtocolManager {
             logger.debug(" -> %s %s", protocolId.current()[0], subElement);
 
             this.protocols.put(protocolId, protocol);
+            return true;
         }
         return false;
     }
@@ -75,6 +84,17 @@ public final class ProtocolManager {
     public void shutdown() {
         this.protocols.forEach((protocolId, protocol) -> protocol.shutdown());
         this.protocols.clear();
+    }
+
+    public AbstractProtocol getProtocolForVersion(final ProtocolVersion version) {
+        for (Map.Entry<ProtocolId, AbstractProtocol> entry : this.protocols.entrySet()) {
+            final ProtocolId protocolId = entry.getKey();
+            for (ProtocolVersion protocolVersion : protocolId.current()) {
+                if (protocolVersion.getProtocolId() == version.getProtocolId())
+                    return entry.getValue();
+            }
+        }
+        return null;
     }
 
 }

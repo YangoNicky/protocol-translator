@@ -14,7 +14,11 @@ public final class Protocol1_8_9 extends AbstractProtocol {
 
     @Override
     public void registerDownTransformation() {
+        this.registerPacketTransformerToClient(0x01, (from, to) -> {
 
+            to.writeString("transformed lol");
+            return to;
+        });
     }
 
 

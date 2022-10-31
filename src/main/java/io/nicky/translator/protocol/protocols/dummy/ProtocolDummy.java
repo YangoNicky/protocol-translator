@@ -26,12 +26,14 @@ public final class ProtocolDummy extends AbstractProtocol {
 
         });
 
-        this.registerPacketTransformerToServer(0x01, 50, (from, to) -> {
+        this.registerPacketTransformerToServer(0x01, (from, to) -> {
 
+            return to;
         });
 
         this.registerPacketTransformerToClient(0x01, (from, to) -> {
 
+            return to;
         });
 
     }

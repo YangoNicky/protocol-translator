@@ -1,30 +1,19 @@
 package io.nicky.translator.protocol;
 
 import io.nicky.translator.protocol.protocol.ProtocolManager;
+import io.nicky.translator.protocol.protocol.ProtocolVersion;
+import io.nicky.translator.protocol.transformation.TransformerManager;
+import io.nicky.translator.protocol.units.Pair;
 
-public final class ProtocolTranslator implements AutoCloseable {
+public abstract class ProtocolTranslator {
 
-    private final ProtocolManager protocolManager;
-    private final Thread mainThread;
+    public abstract void initialize();
 
-    public ProtocolTranslator() {
-        this.mainThread = Thread.currentThread();
+    public abstract Pair<ProtocolVersion, ProtocolVersion> range();
 
-        this.protocolManager = new ProtocolManager();
-    }
+    public abstract void shutdown();
 
-    public void initialize() {
-        mainThread.setName("protocol-main");
+    public abstract ProtocolManager getProtocolManager();
 
-        this.protocolManager.initialize();
-
-        Runtime.getRuntime().addShutdownHook(
-                new Thread(this::close, "shutdown-hook"));
-    }
-
-    @Override
-    public void close() {
-        this.protocolManager.shutdown();
-    }
-
+    public abstract TransformerManager getTransformerManager();
 }

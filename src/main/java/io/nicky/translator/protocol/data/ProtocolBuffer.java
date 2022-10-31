@@ -2,27 +2,34 @@ package io.nicky.translator.protocol.data;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 @SuppressWarnings("unused")
 public class ProtocolBuffer {
+
+    private final int packetId;
 
     private byte[] internal;
     private int writePosition;
     private int readPosition;
 
-    public ProtocolBuffer(byte[] internal) {
+    public ProtocolBuffer(int packetId, byte[] internal) {
+        this.packetId = packetId;
         this.internal = internal;
     }
 
-    public ProtocolBuffer(final ByteBuffer buffer) {
+    public ProtocolBuffer(int packetId, final ByteBuffer buffer) {
+        this.packetId = packetId;
         this.internal = buffer.array();
     }
 
-    public ProtocolBuffer() {
+    public ProtocolBuffer(int packetId) {
+        this.packetId = packetId;
         this.internal = new byte[1024 * 8];
     }
 
-    public ProtocolBuffer(final int capacity) {
+    public ProtocolBuffer(int packetId, final int capacity) {
+        this.packetId = packetId;
         this.internal = new byte[capacity];
     }
 
@@ -36,12 +43,11 @@ public class ProtocolBuffer {
 
     public byte readByte() {
         this.checkCapacity(Action.READ, 1);
-
         return internal[readPosition++];
     }
 
     // should not use such weird ints xd
-    @Deprecated
+    @Deprecated @SuppressWarnings("all")
     public void write127Int(final int value) {
         if (value > 127 || value < -127)
             throw new IllegalStateException("int is to big or small");
@@ -50,7 +56,7 @@ public class ProtocolBuffer {
     }
 
     // should not use such weird ints xd
-    @Deprecated
+    @Deprecated @SuppressWarnings("all")
     public int read127Int() {
         return this.readByte();
     }
@@ -127,8 +133,16 @@ public class ProtocolBuffer {
         }
     }
 
+    public String dump() {
+        return "PacketDump: \n" + "  Id: " + this.packetId + "\n Bytes:" + Arrays.toString(this.internal);
+    }
+
     public enum Action {
         READ, WRITE
+    }
+
+    public ProtocolBuffer clone() {
+        return new ProtocolBuffer(this.packetId, this.internal);
     }
 
     public byte[] getInternal() {
@@ -150,4 +164,9 @@ public class ProtocolBuffer {
     public void setReadPosition(int readPosition) {
         this.readPosition = readPosition;
     }
+
+    public int getPacketId() {
+        return packetId;
+    }
+
 }
